@@ -1,19 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.home.HomeFragment">
-
-    <TextView
-        android:id="@+id/text_home"
+    android:layout_height="match_parent">
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp" />
-
-</LinearLayout>
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        tools:context=".ui.home.HomeFragment">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="20dp"
+            >
+            <com.example.androidsdktutorial.ui.product.ProductView
+                android:id="@+id/productView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:name="トップス"
+                app:productId="1"
+                app:image="@drawable/tops"
+                app:price="10000"
+                />
+            <com.example.androidsdktutorial.ui.product.ProductView
+                android:id="@+id/productView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:name="装甲騎兵ボトムズ"
+                app:productId="2"
+                app:image="@drawable/bottoms"
+                app:price="10000"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <com.example.androidsdktutorial.ui.product.ProductView
+                android:id="@+id/productView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:name="帽子"
+                android:layout_weight="1"
+                app:productId="3"
+                app:image="@drawable/hats"
+                app:price="10000"
+                />
+            <com.example.androidsdktutorial.ui.product.ProductView
+                android:id="@+id/productView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:name="マフラー"
+                android:layout_weight="1"
+                app:productId="4"
+                app:image="@drawable/scarf"
+                app:price="10000"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

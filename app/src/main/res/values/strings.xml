@@ -3,4 +3,5 @@
     <string name="title_home">Home</string>
     <string name="title_cart">Cart</string>
     <string name="title_account">Account</string>
+    <string name="add_to_cart">カートに入れる</string>
 </resources>

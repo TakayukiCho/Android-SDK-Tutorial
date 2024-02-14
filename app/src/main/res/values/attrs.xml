@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ProductView">
+        <attr name="image" format="reference" />
+        <attr name="name" format="string" />
+        <attr name="productId" format="string" />
+        <attr name="price" format="integer" />
+    </declare-styleable>
+</resources>
