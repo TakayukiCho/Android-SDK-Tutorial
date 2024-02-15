@@ -46,28 +46,26 @@ class AccountFragment : Fragment() {
         val viewWithSession = inflater.inflate(R.layout.view_with_session, container, false)
         val userId = sharedPreference?.getString("userId", "")!!
         viewWithSession.findViewById<TextView>(R.id.userId).text = "userId: ${userId}"
-        viewWithSession.findViewById<Button>(R.id.logout_button).setOnClickListener(this::onLogout)
+        viewWithSession.findViewById<Button>(R.id.logout_button).setOnClickListener {
+            // ログアウト処理
+            Toast.makeText(context, "ログアウト完了", Toast.LENGTH_SHORT).show()
+            sharedPreference?.edit()?.remove("userId")?.apply()
+            getRootView().removeAllViews()
+            getRootView().addView(renderWithoutSession(inflater,container))
+        }
         return viewWithSession
     }
 
     private fun renderWithoutSession(inflater: LayoutInflater, container: ViewGroup?): View {
         val viewWithoutSession = inflater.inflate(R.layout.view_without_session, container, false)
-        viewWithoutSession.findViewById<Button>(R.id.login_button).setOnClickListener(this::onLogin)
+
+        viewWithoutSession.findViewById<Button>(R.id.login_button).setOnClickListener {
+            // ログイン処理
+            Toast.makeText(context, "ログイン完了", Toast.LENGTH_SHORT).show()
+            sharedPreference?.edit()?.putString("userId", UUID.randomUUID().toString())?.apply()
+            getRootView().removeAllViews()
+            getRootView().addView(renderWithSession(inflater,container))
+        }
         return viewWithoutSession
     }
-
-    private fun onLogin(view: View) {
-        Toast.makeText(context, "ログイン完了", Toast.LENGTH_SHORT).show()
-        sharedPreference?.edit()?.putString("userId", UUID.randomUUID().toString())?.apply()
-        getRootView().removeAllViews()
-        getRootView().addView(renderWithSession(inflater,container))
-    }
-
-    private fun onLogout(view: View) {
-        Toast.makeText(context, "ログアウト完了", Toast.LENGTH_SHORT).show()
-        sharedPreference?.edit()?.remove("userId")?.apply()
-        getRootView().removeAllViews()
-        getRootView().addView(renderWithoutSession(inflater,container))
-    }
-
 }
