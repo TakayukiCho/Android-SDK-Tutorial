@@ -8,4 +8,6 @@
     <string name="password">パスワード</string>
     <string name="login">ログイン</string>
     <string name="purchase">購入する</string>
+    <string name="with_session">ログイン中</string>
+    <string name="logout">ログアウト</string>
 </resources>

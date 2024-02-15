@@ -1,43 +1,75 @@
 package com.example.androidsdktutorial.ui.account
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.androidsdktutorial.R
-import com.example.androidsdktutorial.databinding.FragmentAccountBinding
+import java.util.UUID
 
 class AccountFragment : Fragment() {
 
-    private var _binding: FragmentAccountBinding? = null
+    private lateinit var baseView: LinearLayout
+    private fun getRootView(): LinearLayout {
+        return baseView.findViewById<LinearLayout>(R.id.fragment_account)
+    }
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private val sharedPreference by lazy {
+        context?.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        baseView = inflater.inflate(R.layout.fragment_account, container, false) as LinearLayout
 
-        _binding = FragmentAccountBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        val userId = sharedPreference?.getString("userId", null)
 
-        root.findViewById<Button>(R.id.login_button).setOnClickListener {
-            Toast.makeText(context, "ログイン完了(ということにする)", Toast.LENGTH_SHORT).show()
+        return if (userId.isNullOrBlank()) {
+            getRootView().addView(renderWithoutSession(inflater, container))
+            baseView
+        } else {
+            getRootView().addView(renderWithSession(inflater, container))
+            baseView
         }
 
-        return root
     }
+
+    private fun renderWithSession(inflater: LayoutInflater, container: ViewGroup?): View {
+        val viewWithSession = inflater.inflate(R.layout.view_with_session, container, false)
+        val userId = sharedPreference?.getString("userId", "")!!
+        viewWithSession.findViewById<TextView>(R.id.userId).text = "userId: ${userId}"
+        viewWithSession.findViewById<Button>(R.id.logout_button).setOnClickListener {
+            Toast.makeText(context, "ログアウト完了", Toast.LENGTH_SHORT).show()
+            sharedPreference?.edit()?.remove("userId")?.apply()
+            getRootView().removeAllViews()
+            getRootView().addView(renderWithoutSession(inflater,container))
+        }
+        return viewWithSession
+    }
+
+    private fun renderWithoutSession(inflater: LayoutInflater, container: ViewGroup?): View {
+        val viewWithoutSession = inflater.inflate(R.layout.view_without_session, container, false)
+
+        viewWithoutSession.findViewById<Button>(R.id.login_button).setOnClickListener {
+            Toast.makeText(context, "ログイン完了", Toast.LENGTH_SHORT).show()
+            sharedPreference?.edit()?.putString("userId", UUID.randomUUID().toString())?.apply()
+            getRootView().removeAllViews()
+            getRootView().addView(renderWithSession(inflater,container))
+        }
+        return viewWithoutSession
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
     }
 }
