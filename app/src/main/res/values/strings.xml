@@ -4,4 +4,8 @@
     <string name="title_cart">Cart</string>
     <string name="title_account">Account</string>
     <string name="add_to_cart">カートに入れる</string>
+    <string name="emailAddress">メールアドレス</string>
+    <string name="password">パスワード</string>
+    <string name="login">ログイン</string>
+    <string name="purchase">購入する</string>
 </resources>

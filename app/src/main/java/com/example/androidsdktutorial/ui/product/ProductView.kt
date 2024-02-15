@@ -34,6 +34,14 @@ class ProductView (context : Context, attributeSet: AttributeSet) : LinearLayout
         findViewById<TextView>(R.id.product_price).text = "${price.toString()}円"
         findViewById<ImageView>(R.id.product_image).setImageDrawable(image)
         findViewById<Button>(R.id.add_to_cart).setOnClickListener {
+            val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+            sharedPreferences.edit().apply {
+                putString("id", id)
+                putInt("price", price)
+                putString("name", name)
+                apply()
+            }
+
             // TODO: ストレージに保存
             Toast.makeText(context, "${name}がカートに追加されました", Toast.LENGTH_SHORT).show()
         }
