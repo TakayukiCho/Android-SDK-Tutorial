@@ -18,10 +18,6 @@ class CartFragment : Fragment() {
 
     private var _binding: FragmentCartBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
     private val sharedPreference by lazy {
        context?.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
     }
@@ -31,26 +27,25 @@ class CartFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCartBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        val view = inflater.inflate(R.layout.fragment_cart, container, false)
 
-        root.findViewById<TextView>(R.id.cart_product_id).text = "ID: ${sharedPreference?.getString("id", "-")}"
-        root.findViewById<TextView>(R.id.cart_price).text = "値段：${sharedPreference?.getInt("price", 0).toString()}円"
-        root.findViewById<TextView>(R.id.cart_product_name).text =  sharedPreference?.getString("name", "-")
+        view.findViewById<TextView>(R.id.cart_product_id).text = "ID: ${sharedPreference?.getString("id", "-")}"
+        view.findViewById<TextView>(R.id.cart_price).text = "値段：${sharedPreference?.getInt("price", 0).toString()}円"
+        view.findViewById<TextView>(R.id.cart_product_name).text =  sharedPreference?.getString("name", "-")
 
-        root.findViewById<Button>(R.id.purchase).setOnClickListener {
+        view.findViewById<Button>(R.id.purchase).setOnClickListener {
             sharedPreference?.edit()?.apply {
                 remove("id")
                 remove("name")
                 remove("price")
                 apply()
             }
-            root.findViewById<TextView>(R.id.cart_product_id).text = "ID: ${sharedPreference?.getString("id", "-")}"
-            root.findViewById<TextView>(R.id.cart_price).text = "値段：${sharedPreference?.getInt("price", 0).toString()}円"
-            root.findViewById<TextView>(R.id.cart_product_name).text =  sharedPreference?.getString("name", "-")
+            view.findViewById<TextView>(R.id.cart_product_id).text = "ID: ${sharedPreference?.getString("id", "-")}"
+            view.findViewById<TextView>(R.id.cart_price).text = "値段：${sharedPreference?.getInt("price", 0).toString()}円"
+            view.findViewById<TextView>(R.id.cart_product_name).text =  sharedPreference?.getString("name", "-")
             Toast.makeText(context, "購入完了", Toast.LENGTH_SHORT).show()
         }
-        return root
+        return view
     }
 
     override fun onDestroyView() {
