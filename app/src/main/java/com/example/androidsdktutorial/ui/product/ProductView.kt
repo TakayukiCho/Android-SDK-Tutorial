@@ -3,6 +3,7 @@ package com.example.androidsdktutorial.ui.product
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -23,6 +24,7 @@ class ProductView (context : Context, attributeSet: AttributeSet) : LinearLayout
         this.orientation = VERTICAL
 
         val attrs = context.theme.obtainStyledAttributes(attributeSet, R.styleable.ProductView, 0, 0)
+
         attrs.apply {
             name = getString(R.styleable.ProductView_name)!!
             id = getString(R.styleable.ProductView_productId)!!
@@ -33,17 +35,18 @@ class ProductView (context : Context, attributeSet: AttributeSet) : LinearLayout
         findViewById<TextView>(R.id.product_name).text = name
         findViewById<TextView>(R.id.product_price).text = "${price.toString()}円"
         findViewById<ImageView>(R.id.product_image).setImageDrawable(image)
-        findViewById<Button>(R.id.add_to_cart).setOnClickListener {
-            val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-            sharedPreferences.edit().apply {
-                putString("id", id)
-                putInt("price", price)
-                putString("name", name)
-                apply()
-            }
+        findViewById<Button>(R.id.add_to_cart).setOnClickListener(this::onPurchase)
+    }
 
-            // TODO: ストレージに保存
-            Toast.makeText(context, "${name}がカートに追加されました", Toast.LENGTH_SHORT).show()
+    private fun onPurchase(view: View) {
+        val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        sharedPreferences.edit().apply {
+            putString("id", id)
+            putInt("price", price)
+            putString("name", name)
+            apply()
         }
+
+        Toast.makeText(context, "${name}がカートに追加されました", Toast.LENGTH_SHORT).show()
     }
 }
