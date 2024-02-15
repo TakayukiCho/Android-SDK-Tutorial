@@ -33,43 +33,41 @@ class AccountFragment : Fragment() {
 
         val userId = sharedPreference?.getString("userId", null)
 
-        return if (userId.isNullOrBlank()) {
+        if (userId.isNullOrBlank()) {
             getRootView().addView(renderWithoutSession(inflater, container))
-            baseView
         } else {
             getRootView().addView(renderWithSession(inflater, container))
-            baseView
         }
 
+        return baseView
     }
 
     private fun renderWithSession(inflater: LayoutInflater, container: ViewGroup?): View {
         val viewWithSession = inflater.inflate(R.layout.view_with_session, container, false)
         val userId = sharedPreference?.getString("userId", "")!!
         viewWithSession.findViewById<TextView>(R.id.userId).text = "userId: ${userId}"
-        viewWithSession.findViewById<Button>(R.id.logout_button).setOnClickListener {
-            Toast.makeText(context, "ログアウト完了", Toast.LENGTH_SHORT).show()
-            sharedPreference?.edit()?.remove("userId")?.apply()
-            getRootView().removeAllViews()
-            getRootView().addView(renderWithoutSession(inflater,container))
-        }
+        viewWithSession.findViewById<Button>(R.id.logout_button).setOnClickListener(this::onLogout)
         return viewWithSession
     }
 
     private fun renderWithoutSession(inflater: LayoutInflater, container: ViewGroup?): View {
         val viewWithoutSession = inflater.inflate(R.layout.view_without_session, container, false)
-
-        viewWithoutSession.findViewById<Button>(R.id.login_button).setOnClickListener {
-            Toast.makeText(context, "ログイン完了", Toast.LENGTH_SHORT).show()
-            sharedPreference?.edit()?.putString("userId", UUID.randomUUID().toString())?.apply()
-            getRootView().removeAllViews()
-            getRootView().addView(renderWithSession(inflater,container))
-        }
+        viewWithoutSession.findViewById<Button>(R.id.login_button).setOnClickListener(this::onLogin)
         return viewWithoutSession
     }
 
-
-    override fun onDestroyView() {
-        super.onDestroyView()
+    private fun onLogin(view: View) {
+        Toast.makeText(context, "ログイン完了", Toast.LENGTH_SHORT).show()
+        sharedPreference?.edit()?.putString("userId", UUID.randomUUID().toString())?.apply()
+        getRootView().removeAllViews()
+        getRootView().addView(renderWithSession(inflater,container))
     }
+
+    private fun onLogout(view: View) {
+        Toast.makeText(context, "ログアウト完了", Toast.LENGTH_SHORT).show()
+        sharedPreference?.edit()?.remove("userId")?.apply()
+        getRootView().removeAllViews()
+        getRootView().addView(renderWithoutSession(inflater,container))
+    }
+
 }

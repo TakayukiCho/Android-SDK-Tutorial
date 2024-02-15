@@ -16,8 +16,6 @@ import com.example.androidsdktutorial.databinding.FragmentCartBinding
 
 class CartFragment : Fragment() {
 
-    private var _binding: FragmentCartBinding? = null
-
     private val sharedPreference by lazy {
        context?.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
     }
@@ -33,23 +31,20 @@ class CartFragment : Fragment() {
         view.findViewById<TextView>(R.id.cart_price).text = "値段：${sharedPreference?.getInt("price", 0).toString()}円"
         view.findViewById<TextView>(R.id.cart_product_name).text =  sharedPreference?.getString("name", "-")
 
-        view.findViewById<Button>(R.id.purchase).setOnClickListener {
-            sharedPreference?.edit()?.apply {
-                remove("id")
-                remove("name")
-                remove("price")
-                apply()
-            }
-            view.findViewById<TextView>(R.id.cart_product_id).text = "ID: ${sharedPreference?.getString("id", "-")}"
-            view.findViewById<TextView>(R.id.cart_price).text = "値段：${sharedPreference?.getInt("price", 0).toString()}円"
-            view.findViewById<TextView>(R.id.cart_product_name).text =  sharedPreference?.getString("name", "-")
-            Toast.makeText(context, "購入完了", Toast.LENGTH_SHORT).show()
-        }
+        view.findViewById<Button>(R.id.purchase).setOnClickListener(this::onPurchase)
         return view
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun onPurchase(view: View) {
+        sharedPreference?.edit()?.apply {
+            remove("id")
+            remove("name")
+            remove("price")
+            apply()
+        }
+        view.findViewById<TextView>(R.id.cart_product_id).text = "ID: ${sharedPreference?.getString("id", "-")}"
+        view.findViewById<TextView>(R.id.cart_price).text = "値段：${sharedPreference?.getInt("price", 0).toString()}円"
+        view.findViewById<TextView>(R.id.cart_product_name).text =  sharedPreference?.getString("name", "-")
+        Toast.makeText(context, "購入完了", Toast.LENGTH_SHORT).show()
     }
 }
