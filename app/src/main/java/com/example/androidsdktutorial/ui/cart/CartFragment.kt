@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidsdktutorial.R
 import com.example.androidsdktutorial.databinding.FragmentCartBinding
+import io.karte.android.tracking.Tracker
 
 class CartFragment : Fragment() {
 
